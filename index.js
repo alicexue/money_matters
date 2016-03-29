@@ -47,7 +47,7 @@ var repData = {
 var showingDems = true;
 var party = demData;
 
-var chart = function(data){
+var chart = function(data,newChart){
     var svg = d3.select("body")
 	.append("svg")
 	.append("g")
@@ -80,43 +80,43 @@ var chart = function(data){
     //svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     svg.attr("transform", "translate(" + (radius+120) + "," + radius + ")");
 
-
     var key = function(d){ return d.data.label; };
 
     var color = d3.scale.ordinal()
 	.domain(["True", "Mostly True", "Half True", "Mostly False", "False", "Pants on Fire"])
 	.range(["#71BF44", "#C3D52D", "#FFD503", "#EE9022", "#E71F28", "#961F28"]);
+    change(fillData(data));
 
-    function getData() {
-	if (showingDems == true) {
-	    party = repData;
-	    showingDems = false;
-	} else {
-	    party = demData;
-	    showingDems = true;
-	}
-    }
-
-    function fillData() {
+    function fillData(data) {
 	labels = color.domain();
 	return labels.map(function(label){
 	    return { label: label, value: data[label] }
 	});
-    }
+    };
 
-    function update() {
-	getData();
-	change(fillData());
-    }
-    update();
-
+    function changeParty() {
+	if (showingDems == true) {
+	    for (var candidate in repData) {
+		change(fillData(repData[candidate]));
+	    }
+	    showingDems = false;
+	} else {
+	    for (var candidate in demData) {
+		change(fillData(demData[candidate]));
+	    }
+	    showingDems = true;
+	}
+    };    
+    
+    
     d3.select("body")
 	.on("click", function(){
-	    update();
+	    console.log("clicked");
+	    changeParty();
 	});
 
     function change(data) {
-
+	
 	/* ------- PIE SLICES -------*/
 	var slice = svg.select(".slices").selectAll("path.slice")
 	    .data(pie(data), key);
@@ -205,8 +205,20 @@ var chart = function(data){
 	polyline.exit()
 	    .remove();
     };
-
 };
 
-chart(demData["Hillary Clinton"]);
-chart(repData["Donald Trump"]);
+
+function update() {
+    if (showingDems == true) {
+	for (var candidate in demData) {
+	    chart(demData[candidate]);
+	}
+    } else {
+	for (var candidate in repData) {
+	    chart(repData[candidate]);
+	}
+    }
+};   
+
+
+update();
