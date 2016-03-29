@@ -44,11 +44,10 @@ var repData = {
     }
 };
 
-var showingDems = true;
-var party = demData;
+var showingDems = false;
 
-var chart = function(data,newChart){
-    var svg = d3.select("body")
+var chart = function(index,data){
+    var svg = d3.select("#div" + index)
 	.append("svg")
 	.append("g")
 
@@ -77,14 +76,14 @@ var chart = function(data,newChart){
 	.innerRadius(radius * 0.9)
 	.outerRadius(radius * 0.9);
 
-    //svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-    svg.attr("transform", "translate(" + (radius+120) + "," + radius + ")");
+    svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     var key = function(d){ return d.data.label; };
 
     var color = d3.scale.ordinal()
 	.domain(["True", "Mostly True", "Half True", "Mostly False", "False", "Pants on Fire"])
 	.range(["#71BF44", "#C3D52D", "#FFD503", "#EE9022", "#E71F28", "#961F28"]);
+
     change(fillData(data));
 
     function fillData(data) {
@@ -95,23 +94,26 @@ var chart = function(data,newChart){
     };
 
     function changeParty() {
+	var divIndex = 0;
 	if (showingDems == true) {
 	    for (var candidate in repData) {
+		svg = d3.select("#div" + divIndex);
 		change(fillData(repData[candidate]));
+		divIndex++;
 	    }
 	    showingDems = false;
 	} else {
 	    for (var candidate in demData) {
+		svg = d3.select("#div" + divIndex);
 		change(fillData(demData[candidate]));
+		divIndex++;
 	    }
 	    showingDems = true;
 	}
     };    
-    
-    
+
     d3.select("body")
 	.on("click", function(){
-	    console.log("clicked");
 	    changeParty();
 	});
 
@@ -209,13 +211,16 @@ var chart = function(data,newChart){
 
 
 function update() {
+    var divNum = 0;
     if (showingDems == true) {
 	for (var candidate in demData) {
-	    chart(demData[candidate]);
+	    chart(divNum,demData[candidate]);
+	    divNum++;
 	}
     } else {
 	for (var candidate in repData) {
-	    chart(repData[candidate]);
+	    chart(divNum,repData[candidate]);
+	    divNum++;
 	}
     }
 };   
