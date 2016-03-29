@@ -1,4 +1,4 @@
-var data = {
+var demData = {
     "Hillary Clinton": {
 	"True": 0.24,
 	"Mostly True": 0.27,
@@ -14,7 +14,10 @@ var data = {
 	"Mostly False": 0.15,
 	"False": 0.14,
 	"Pants on Fire": 0.00
-    },
+    }
+};
+
+var repData = {
     "Donald Trump": {
 	"True": 0.03,
 	"Mostly True": 0.06,
@@ -41,6 +44,9 @@ var data = {
     }
 };
 
+var showingDems = true;
+var party = demData;
+
 var svg = d3.select("body")
     .append("svg")
     .append("g")
@@ -52,9 +58,9 @@ svg.append("g")
 svg.append("g")
     .attr("class", "lines");
 
-var width = 960,
-height = 450,
-radius = Math.min(width, height) / 2;
+var width = 800,
+height = 300,
+radius = Math.min(width , height) / 2;
 
 var pie = d3.layout.pie()
     .sort(null)
@@ -70,7 +76,9 @@ var outerArc = d3.svg.arc()
     .innerRadius(radius * 0.9)
     .outerRadius(radius * 0.9);
 
-svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+//svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+svg.attr("transform", "translate(" + (radius+120) + "," + radius + ")");
+
 
 var key = function(d){ return d.data.label; };
 
@@ -78,14 +86,37 @@ var color = d3.scale.ordinal()
     .domain(["True", "Mostly True", "Half True", "Mostly False", "False", "Pants on Fire"])
     .range(["#71BF44", "#C3D52D", "#FFD503", "#EE9022", "#E71F28", "#961F28"]);
 
-function fillData (){
-    var labels = color.domain();
+function getData() {
+    if (showingDems == true) {
+	party = repData;
+	showingDems = false;
+    } else {
+	party = demData;
+	showingDems = true;
+    }
+}
+
+function fillData(party,candidate) {
+    labels = color.domain();
     return labels.map(function(label){
-	return { label: label, value: data["Hillary Clinton"][label] }
+	return { label: label, value: party[candidate][label] }
     });
 }
 
-change(fillData());
+function update() {
+    getData();
+    for (var candidate in party) {
+	change(fillData(party,candidate));
+    }
+}
+update();
+
+//change(fillData());
+
+d3.select("body")
+    .on("click", function(){
+	update();
+});
 
 function change(data) {
 
