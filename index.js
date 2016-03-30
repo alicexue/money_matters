@@ -120,8 +120,9 @@ var chart = function(index,data){
 
     d3.select("body")
 	.on("click", function(){
+	    console.log(showingDems);
 	    changeParty();
-      console.log(showingDems);
+	    console.log(showingDems);
 	});
 
     function change(data) {
@@ -236,7 +237,6 @@ function update() {
     	    chart(divNum,demData[candidate]);
     	    divNum++;
     	}
-      showingDems = false;
     } else {
       console.log("Republican");
       var body = d3.select("body")
@@ -247,7 +247,6 @@ function update() {
     	    chart(divNum,repData[candidate]);
     	    divNum++;
     	}
-      showingDems = true;
     }
 
 };
