@@ -81,7 +81,6 @@ var chart = function(index,data){
 	.innerRadius(radius * 0.9)
 	.outerRadius(radius * 0.9);
 
-    //svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     svg.attr("transform", "translate(" + width / 3 + "," + height / 2 + ")");
 
     var key = function(d){ return d.data.label; };
@@ -101,35 +100,46 @@ var chart = function(index,data){
 
     function changeParty() {
       	var divIndex = 0;
+	// change to republicans
       	if (showingDems == true) {
           var body = d3.select("body")
-          .transition().duration(750)
-          .style("background-color", "#232066");
+		.transition().duration(750)
+		.style("background-color", "#E91D0E");
 
           var john = d3.select("#div2")
-          .transition().duration(750)
-          .style("opacity", "0");
+		.transition().duration(750)
+		.style("opacity", "1");
 
-          //ENTER CODE HERE FOR SELECTING THE 2 HEADERS AND CHANGING NAMES
+          d3.select("#cand1")
+	       .text("Donald Trump")
+
+	  d3.select("#cand2")
+		.text("Ted Cruz")
+	    
+	  d3.select("#cand3") 
+		.text("John Kasich")
 
       	    for (var candidate in repData) {
-          		svg = d3.select("#div" + divIndex);
-          		change(fillData(repData[candidate]));
-          		divIndex++;
+          	svg = d3.select("#div" + divIndex);
+          	change(fillData(repData[candidate]));
+          	divIndex++;
       	    }
       	    showingDems = false;
-
-
       	} else {
-          var body = d3.select("body")
-          .transition().duration(750)
-          .style("background-color", "#E91D0E");
+	    // change to democrats
+            var body = d3.select("body")
+		.transition().duration(750)
+		.style("background-color", "#232066");
+	    
+            var john = d3.select("#div2")
+		.transition().duration(750)
+		.style("opacity", "0");
 
-          var john = d3.select("#div2")
-          .transition().duration(750)
-          .style("opacity", "1");
+          d3.select("#cand1")
+	       .text("Hillary Clinton")
 
-          //ENTER CODE HERE FOR SELECTING THE 2 HEADERS AND CHANGING NAMES
+	  d3.select("#cand2")
+	       .text("Bernie Sanders")
 
       	    for (var candidate in demData) {
             		svg = d3.select("#div" + divIndex);
@@ -245,24 +255,14 @@ var chart = function(index,data){
 };
 
 
-function update() {
+function initialize() {
     var divNum = 0;
     if (showingDems == true) {
-      console.log("Democrats");
-      var body = d3.select("body")
-      .transition()
-      .style("background-color", "#232066");
-
     	for (var candidate in demData) {
     	    chart(divNum,demData[candidate]);
     	    divNum++;
     	}
     } else {
-      console.log("Republican");
-      var body = d3.select("body")
-      .transition()
-      .style("background-color", "#E91D0E");
-
     	for (var candidate in repData) {
     	    chart(divNum,repData[candidate]);
     	    divNum++;
@@ -272,4 +272,4 @@ function update() {
 };
 
 
-update();
+initialize();
