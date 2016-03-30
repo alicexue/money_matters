@@ -1,3 +1,5 @@
+
+// Dictionary initializations for Republican and Democrats
 var demData = {
     "Hillary Clinton": {
 	"True": 0.24,
@@ -44,8 +46,11 @@ var repData = {
     }
 };
 
+
+// Boolean that serves as toggle
 var showingDems = false;
 
+// function that creates the graphs
 var chart = function(index,data){
     var svg = d3.select("#div" + index)
 	.append("svg")
@@ -76,7 +81,8 @@ var chart = function(index,data){
 	.innerRadius(radius * 0.9)
 	.outerRadius(radius * 0.9);
 
-    svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    //svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    svg.attr("transform", "translate(" + width / 3 + "," + height / 2 + ")");
 
     var key = function(d){ return d.data.label; };
 
@@ -94,31 +100,34 @@ var chart = function(index,data){
     };
 
     function changeParty() {
-	var divIndex = 0;
-	if (showingDems == true) {
-	    for (var candidate in repData) {
-		svg = d3.select("#div" + divIndex);
-		change(fillData(repData[candidate]));
-		divIndex++;
-	    }
-	    showingDems = false;
-	} else {
-	    for (var candidate in demData) {
-		svg = d3.select("#div" + divIndex);
-		change(fillData(demData[candidate]));
-		divIndex++;
-	    }
-	    showingDems = true;
-	}
-    };    
+      	var divIndex = 0;
+      	if (showingDems == true) {
+      	    for (var candidate in repData) {
+      		svg = d3.select("#div" + divIndex);
+      		change(fillData(repData[candidate]));
+      		divIndex++;
+      	    }
+      	    //showingDems = false;
+      	} else {
+      	    for (var candidate in demData) {
+      		svg = d3.select("#div" + divIndex);
+      		change(fillData(demData[candidate]));
+      		divIndex++;
+      	    }
+      	    //showingDems = true;
+      	}
+    };
 
     d3.select("body")
 	.on("click", function(){
 	    changeParty();
+      console.log(showingDems);
 	});
 
     function change(data) {
-	
+
+
+
 	/* ------- PIE SLICES -------*/
 	var slice = svg.select(".slices").selectAll("path.slice")
 	    .data(pie(data), key);
@@ -128,7 +137,7 @@ var chart = function(index,data){
 	    .style("fill", function(d) { return color(d.data.label); })
 	    .attr("class", "slice");
 
-	slice		
+	slice
 	    .transition().duration(1000)
 	    .attrTween("d", function(d) {
 		this._current = this._current || d;
@@ -142,6 +151,8 @@ var chart = function(index,data){
 	slice.exit()
 	    .remove();
 
+
+
 	/* ------- TEXT LABELS -------*/
 
 	var text = svg.select(".labels").selectAll("text")
@@ -150,10 +161,11 @@ var chart = function(index,data){
 	text.enter()
 	    .append("text")
 	    .attr("dy", ".35em")
+      .style("fill", "white")
 	    .text(function(d) {
 		return d.data.label;
 	    });
-	
+
 	function midAngle(d){
 	    return d.startAngle + (d.endAngle - d.startAngle)/2;
 	}
@@ -183,11 +195,13 @@ var chart = function(index,data){
 	text.exit()
 	    .remove();
 
+
+
 	/* ------- SLICE TO TEXT POLYLINES -------*/
 
 	var polyline = svg.select(".lines").selectAll("polyline")
 	    .data(pie(data), key);
-	
+
 	polyline.enter()
 	    .append("polyline");
 
@@ -201,9 +215,9 @@ var chart = function(index,data){
 		    var pos = outerArc.centroid(d2);
 		    pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
 		    return [arc.centroid(d2), outerArc.centroid(d2), pos];
-		};			
+		};
 	    });
-	
+
 	polyline.exit()
 	    .remove();
     };
@@ -213,17 +227,30 @@ var chart = function(index,data){
 function update() {
     var divNum = 0;
     if (showingDems == true) {
-	for (var candidate in demData) {
-	    chart(divNum,demData[candidate]);
-	    divNum++;
-	}
+      console.log("Democrats");
+      var body = d3.select("body")
+      .transition()
+      .style("background-color", "#232066");
+
+    	for (var candidate in demData) {
+    	    chart(divNum,demData[candidate]);
+    	    divNum++;
+    	}
+      showingDems = false;
     } else {
-	for (var candidate in repData) {
-	    chart(divNum,repData[candidate]);
-	    divNum++;
-	}
+      console.log("Republican");
+      var body = d3.select("body")
+      .transition()
+      .style("background-color", "#E91D0E");
+
+    	for (var candidate in repData) {
+    	    chart(divNum,repData[candidate]);
+    	    divNum++;
+    	}
+      showingDems = true;
     }
-};   
+
+};
 
 
 update();

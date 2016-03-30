@@ -1,8 +1,13 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 960px;
-    height: 500px;
+    width: 100vw;
+    height: 100vh;
     position: relative;
+    background-color: #E91D0E;
+}
+
+.writing{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: white;
 }
 
 svg {
@@ -19,4 +24,22 @@ polyline{
     stroke: black;
     stroke-width: 2px;
     fill: none;
+}
+
+
+.candidates{
+  height: 300px;
+  padding-left: 5%;
+  width: 500px;
+  margin-bottom: 7.5%;
+}
+
+.description{
+  position: absolute;
+  width: 500px;
+  top: 7.5%;
+  right: 50px;
+  border-radius: 15px;
+  background-color: rgba(166, 166, 166, 0.5);
+  padding: 2.5%;
 }
