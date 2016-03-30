@@ -102,17 +102,39 @@ var chart = function(index,data){
     function changeParty() {
       	var divIndex = 0;
       	if (showingDems == true) {
+          var body = d3.select("body")
+          .transition().duration(750)
+          .style("background-color", "#232066");
+
+          var john = d3.select("#div2")
+          .transition().duration(750)
+          .style("opacity", "0");
+
+          //ENTER CODE HERE FOR SELECTING THE 2 HEADERS AND CHANGING NAMES
+
       	    for (var candidate in repData) {
-      		svg = d3.select("#div" + divIndex);
-      		change(fillData(repData[candidate]));
-      		divIndex++;
+          		svg = d3.select("#div" + divIndex);
+          		change(fillData(repData[candidate]));
+          		divIndex++;
       	    }
       	    showingDems = false;
+
+
       	} else {
+          var body = d3.select("body")
+          .transition().duration(750)
+          .style("background-color", "#E91D0E");
+
+          var john = d3.select("#div2")
+          .transition().duration(750)
+          .style("opacity", "1");
+
+          //ENTER CODE HERE FOR SELECTING THE 2 HEADERS AND CHANGING NAMES
+
       	    for (var candidate in demData) {
-      		svg = d3.select("#div" + divIndex);
-      		change(fillData(demData[candidate]));
-      		divIndex++;
+            		svg = d3.select("#div" + divIndex);
+            		change(fillData(demData[candidate]));
+            		divIndex++;
       	    }
       	    showingDems = true;
       	}
@@ -120,9 +142,7 @@ var chart = function(index,data){
 
     d3.select("body")
 	.on("click", function(){
-	    console.log(showingDems);
 	    changeParty();
-	    console.log(showingDems);
 	});
 
     function change(data) {
