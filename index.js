@@ -107,14 +107,14 @@ var chart = function(index,data){
       		change(fillData(repData[candidate]));
       		divIndex++;
       	    }
-      	    //showingDems = false;
+      	    showingDems = false;
       	} else {
       	    for (var candidate in demData) {
       		svg = d3.select("#div" + divIndex);
       		change(fillData(demData[candidate]));
       		divIndex++;
       	    }
-      	    //showingDems = true;
+      	    showingDems = true;
       	}
     };
 
@@ -161,7 +161,7 @@ var chart = function(index,data){
 	text.enter()
 	    .append("text")
 	    .attr("dy", ".35em")
-      .style("fill", "white")
+	    .style("fill", "white")
 	    .text(function(d) {
 		return d.data.label;
 	    });
