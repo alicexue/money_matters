@@ -28,15 +28,15 @@ polyline{
 
 
 .candidates{
-  height: 50%;
+  height: 300px;
   padding-left: 5%;
-  width: 40%;
+  width: 550px;
   margin-bottom: 7.5%;
 }
 
 .description{
   position: absolute;
-  width: 45%;
+  width: 500px;
   top: 0;
   right: 50px;
   border-radius: 15px;
