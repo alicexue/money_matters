@@ -2,7 +2,7 @@ body {
     width: 100vw;
     height: 100vh;
     position: relative;
-    background-color: #E91D0E;
+    background-color: #B30000;
 }
 
 .writing{
@@ -30,7 +30,7 @@ polyline{
 .candidates{
   height: 300px;
   padding-left: 5%;
-  width: 500px;
+  width: 550px;
   margin-bottom: 7.5%;
 }
 
